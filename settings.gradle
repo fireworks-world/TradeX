@@ -1,0 +1,2 @@
+rootProject.name='TradeX'
+include ':app'

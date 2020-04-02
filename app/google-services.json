@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "897207379059",
+    "firebase_url": "https://examplefirebase-8022e.firebaseio.com",
+    "project_id": "examplefirebase-8022e",
+    "storage_bucket": "examplefirebase-8022e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897207379059:android:411ac9f43f072c72e03606",
+        "android_client_info": {
+          "package_name": "com.example.tradex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "897207379059-lej9m5qagaec04dk4p73078euijlgkh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tradex",
+            "certificate_hash": "d18c13fed10fc560aea3eef19ef67271f0b0224c"
+          }
+        },
+        {
+          "client_id": "897207379059-5lrg498ljl2bt4n6g1s55tddauhrt63c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC93FTyYv8MaFUVK0xmYXXlZKpIjcN9p1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "897207379059-5lrg498ljl2bt4n6g1s55tddauhrt63c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

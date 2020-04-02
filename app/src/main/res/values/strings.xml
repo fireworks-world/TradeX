@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TradeX</string>
+    <string name="facebook_app_id">616802105832318</string>
+    <string name="fb_login_protocol_scheme">fb616802105832318</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
