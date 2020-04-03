@@ -42,6 +42,7 @@ public class TradeXHomeView extends Fragment {
     private Context context;
     private SwipeRefreshLayout Refresh;
     private OkHttpClient client;
+    //private List<SymbolsItem> symbolsItemList;
     private ArrayList<String> baseAsset= new ArrayList<String>();
     private ArrayList<String> quoteAsset= new ArrayList<String>();
     private ArrayList<String> price=new ArrayList<>();
@@ -69,8 +70,10 @@ public class TradeXHomeView extends Fragment {
                         List<SymbolsItem> symbolsItemList=exchangeInfo.getSymbols();
                         for (int i=0;i<symbolsItemList.size();i++)
                         {
-                            baseAsset.add(symbolsItemList.get(i).getBaseAsset());
-                            quoteAsset.add(symbolsItemList.get(i).getQuoteAsset());
+                            if(baseAsset.get(i).equals(symbolsItemList.get(i).getBaseAsset()) && quoteAsset.get(i).equals(symbolsItemList.get(i).getQuoteAsset())) {
+                                baseAsset.set(i,symbolsItemList.get(i).getBaseAsset());
+                                quoteAsset.set(i,symbolsItemList.get(i).getQuoteAsset());
+                            }
                         }
                         madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
                         recyclerView = recyclerView.findViewById(R.id.HomeRecyclerView);
@@ -97,16 +100,18 @@ public class TradeXHomeView extends Fragment {
                 List<SymbolsItem> symbolsItemList=exchangeInfo.getSymbols();
                 for (int i=0;i<symbolsItemList.size();i++)
                 {
-                    baseAsset.add(symbolsItemList.get(i).getBaseAsset());
-                    quoteAsset.add(symbolsItemList.get(i).getQuoteAsset());
+                    if(symbolsItemList.get(i).getBaseAsset().equals("ETH") && symbolsItemList.get(i).getQuoteAsset().equals("USDT") ||symbolsItemList.get(i).getBaseAsset().equals("BTC") && symbolsItemList.get(i).getQuoteAsset().equals("USDT")) {
+                        baseAsset.add(symbolsItemList.get(i).getBaseAsset());
+                        quoteAsset.add(symbolsItemList.get(i).getQuoteAsset());
+                    }
                 }
-
-                madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
-                recyclerView = recyclerView.findViewById(R.id.HomeRecyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setAdapter(madaptor);
+                Log.e("tag","aaaaaaa   "+baseAsset+"    "+quoteAsset);
+//                madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
+//                recyclerView = recyclerView.findViewById(R.id.HomeRecyclerView);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                recyclerView.setItemAnimator(new DefaultItemAnimator());
+//                recyclerView.setHasFixedSize(true);
+//                recyclerView.setAdapter(madaptor);
             }
 
             @Override
