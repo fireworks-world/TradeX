@@ -26,14 +26,10 @@ public class AdapterCardView extends RecyclerView.Adapter<AdapterCardView.MyView
     private Context context;
 
     public AdapterCardView(ArrayList<String> baseAsset, ArrayList<String> quoteAsset, ArrayList<String> price, Context context) {
+        this.price.addAll(price);
         this.baseAsset.addAll(baseAsset);
         this.quoteAsset.addAll(quoteAsset);
-        this.price.addAll(price);
         this.context=context;
-    }
-
-    public void setItems(ArrayList<String> price1) {
-        this.price = new ArrayList<>(price1);
     }
 
 
@@ -59,12 +55,11 @@ public class AdapterCardView extends RecyclerView.Adapter<AdapterCardView.MyView
         return baseAsset.size();
     }
 
-    public void notifyDataSetChanged(ArrayList<String> price) {
+    public void notify(ArrayList<String> price) {
+        this.price.set(0,price.get(0));
+        this.price.set(1,price.get(1));
     }
 
-    public void notify(ArrayList<String> price) {
-        this.price.addAll(price);
-    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView Text1,Text2,Text3;

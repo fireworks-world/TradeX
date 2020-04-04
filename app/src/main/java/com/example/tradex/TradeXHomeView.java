@@ -60,15 +60,14 @@ public class TradeXHomeView extends Fragment {
         Refresh = v.findViewById(R.id.Refresh);
         recyclerView = v.findViewById(R.id.HomeRecyclerView);
         client = new OkHttpClient();
-
         Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                        madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setAdapter(madaptor);
+//                        madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
+//                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+////                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+////                        recyclerView.setHasFixedSize(true);
+//                        recyclerView.setAdapter(madaptor);
                         Refresh.setRefreshing(false);
 
             }
@@ -123,7 +122,8 @@ public class TradeXHomeView extends Fragment {
                 com.example.tradex.Response p = gson.fromJson(text, com.example.tradex.Response.class);
                     price.set(0,p.getC());
                     price.set(1,p.getO());
-                    //madaptor.setItems(price);
+
+
                     madaptor.notify(price);
                     madaptor.notifyDataSetChanged();
                 Log.e("tag","bbbbb   "+price);
