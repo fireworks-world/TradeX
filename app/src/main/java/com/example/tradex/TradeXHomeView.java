@@ -114,22 +114,39 @@ public class TradeXHomeView extends Fragment {
         public void onOpen(WebSocket webSocket, okhttp3.Response response) {
         }
         @Override
-        public void onMessage(WebSocket webSocket, String text) {
+        public void onMessage(WebSocket webSocket, final String text) {
+
+                                  try {
+                                     getActivity().runOnUiThread(new Runnable() {
+                                          Gson gson = new GsonBuilder().create();
+                                          com.example.tradex.Response p = gson.fromJson(text, com.example.tradex.Response.class);
+
+                                          @Override
+                                          public void run() {
+                                              price.set(0, p.getC());
+                                              price.set(1, p.getO());
+
+
+                                              madaptor.notify(price);
+                                              madaptor.notifyDataSetChanged();
+                                              Log.e("tag", "bbbbb   " + price);
+                                          }
+
+                                          });
+
+                                          //output(new JSONObject(text));
+                                              
+                                             
+
+
+                                  }catch (Throwable t) {
+                                      Log.e("My App", t.getMessage());
+                                  }
+
+
+
             //Log.e("data",text);
-            try {
-                //output(new JSONObject(text));
-                Gson gson = new GsonBuilder().create();
-                com.example.tradex.Response p = gson.fromJson(text, com.example.tradex.Response.class);
-                    price.set(0,p.getC());
-                    price.set(1,p.getO());
 
-
-                    madaptor.notify(price);
-                    madaptor.notifyDataSetChanged();
-                Log.e("tag","bbbbb   "+price);
-            } catch (Throwable t) {
-                Log.e("My App", t.getMessage());
-            }
         }
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {
