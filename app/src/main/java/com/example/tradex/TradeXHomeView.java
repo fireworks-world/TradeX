@@ -45,7 +45,7 @@ public class TradeXHomeView extends Fragment {
     //private List<SymbolsItem> symbolsItemList;
     private ArrayList<String> baseAsset= new ArrayList<String>();
     private ArrayList<String> quoteAsset= new ArrayList<String>();
-    private ArrayList<String> price=new ArrayList<>();
+    private ArrayList<String> price=new ArrayList<>(2);
 
 
 
@@ -53,43 +53,24 @@ public class TradeXHomeView extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_trade_x_home_view, null);
-
+        price.add("abc");
+        price.add("def");
+        Log.e("tag","onCreate  "+price);
         context =v.getContext().getApplicationContext();
         Refresh = v.findViewById(R.id.Refresh);
         recyclerView = v.findViewById(R.id.HomeRecyclerView);
         client = new OkHttpClient();
-        start();
+
         Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                retrofit2.Call<ExchangeInfo> call=Retroclient.getInstance().getApi().getData();
-                call.enqueue(new Callback<ExchangeInfo>() {
-                    @Override
-                    public void onResponse(Call<ExchangeInfo> call, Response<ExchangeInfo> response) {
-                        ExchangeInfo exchangeInfo=response.body();
-                        List<SymbolsItem> symbolsItemList=exchangeInfo.getSymbols();
-                        for (int i=0;i<symbolsItemList.size();i++)
-                        {
-                            if(baseAsset.get(i).equals(symbolsItemList.get(i).getBaseAsset()) && quoteAsset.get(i).equals(symbolsItemList.get(i).getQuoteAsset())) {
-                                baseAsset.set(i,symbolsItemList.get(i).getBaseAsset());
-                                quoteAsset.set(i,symbolsItemList.get(i).getQuoteAsset());
-                            }
-                        }
                         madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
-                        recyclerView = recyclerView.findViewById(R.id.HomeRecyclerView);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.setHasFixedSize(true);
+//                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//                        recyclerView.setHasFixedSize(true);
                         recyclerView.setAdapter(madaptor);
                         Refresh.setRefreshing(false);
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<ExchangeInfo> call, Throwable t) {
-                        Log.e("tag","msgs  "+t.fillInStackTrace());
-                    }
-                });
             }
         });
         retrofit2.Call<ExchangeInfo> call=Retroclient.getInstance().getApi().getData();
@@ -105,13 +86,11 @@ public class TradeXHomeView extends Fragment {
                         quoteAsset.add(symbolsItemList.get(i).getQuoteAsset());
                     }
                 }
+                madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(madaptor);
                 Log.e("tag","aaaaaaa   "+baseAsset+"    "+quoteAsset);
-//                madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
-//                recyclerView = recyclerView.findViewById(R.id.HomeRecyclerView);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                recyclerView.setItemAnimator(new DefaultItemAnimator());
-//                recyclerView.setHasFixedSize(true);
-//                recyclerView.setAdapter(madaptor);
+                start();
             }
 
             @Override
@@ -122,7 +101,9 @@ public class TradeXHomeView extends Fragment {
 
         return v;
     }
+
     private void start() {
+
         Request request = new Request.Builder().url("wss://stream.binance.com:9443/ws/btcusdt@miniTicker/ethusdt@miniTicker").build();
         EchoWebSocketListener listener = new EchoWebSocketListener();
         WebSocket ws = client.newWebSocket(request, listener);
@@ -135,19 +116,20 @@ public class TradeXHomeView extends Fragment {
         }
         @Override
         public void onMessage(WebSocket webSocket, String text) {
-            Log.e("data",text);
+            //Log.e("data",text);
             try {
                 //output(new JSONObject(text));
                 Gson gson = new GsonBuilder().create();
                 com.example.tradex.Response p = gson.fromJson(text, com.example.tradex.Response.class);
-                price.add(p.getO());
-                price.add(p.getC());
-
-
+                    price.set(0,p.getC());
+                    price.set(1,p.getO());
+                    //madaptor.setItems(price);
+                    madaptor.notify(price);
+                    madaptor.notifyDataSetChanged();
+                Log.e("tag","bbbbb   "+price);
             } catch (Throwable t) {
                 Log.e("My App", t.getMessage());
             }
-
         }
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {

@@ -32,6 +32,10 @@ public class AdapterCardView extends RecyclerView.Adapter<AdapterCardView.MyView
         this.context=context;
     }
 
+    public void setItems(ArrayList<String> price1) {
+        this.price = new ArrayList<>(price1);
+    }
+
 
     @Override
     public AdapterCardView.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,6 +57,13 @@ public class AdapterCardView extends RecyclerView.Adapter<AdapterCardView.MyView
     @Override
     public int getItemCount() {
         return baseAsset.size();
+    }
+
+    public void notifyDataSetChanged(ArrayList<String> price) {
+    }
+
+    public void notify(ArrayList<String> price) {
+        this.price.addAll(price);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
