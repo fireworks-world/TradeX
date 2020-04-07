@@ -1,16 +1,12 @@
 package com.example.tradex;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -36,7 +32,7 @@ public class RegistrationPage extends AppCompatActivity {
 
     private CountDownTimer mCountDownTimer;
 
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     String verificationId,mobilenumber;
     private long mTimeRemaining;
@@ -90,13 +86,11 @@ public class RegistrationPage extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
 
-                                //FirebaseUser user = task.getResult().getUser();
                                 sharedPreferences= getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor=sharedPreferences.edit();
                                 editor.putString("FirstTimeInstall","yes");
                                 editor.putString("number",mobilenumber);
                                 editor.apply();
-                                Toast.makeText(RegistrationPage.this,mobilenumber, Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(RegistrationPage.this,Home.class);
                                 startActivity(intent);
                                 finish();

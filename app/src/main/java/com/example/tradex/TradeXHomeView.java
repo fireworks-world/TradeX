@@ -1,31 +1,25 @@
 package com.example.tradex;
 
 import android.os.Bundle;
-
-import androidx.core.app.Person;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.tradex.Models.ExchangeInfo;
+import com.example.tradex.Models.SymbolsItem;
+import com.example.tradex.Remote.Retroclient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
@@ -42,7 +36,6 @@ public class TradeXHomeView extends Fragment {
     private Context context;
     private SwipeRefreshLayout Refresh;
     private OkHttpClient client;
-    //private List<SymbolsItem> symbolsItemList;
     private ArrayList<String> baseAsset= new ArrayList<String>();
     private ArrayList<String> quoteAsset= new ArrayList<String>();
     private ArrayList<String> price=new ArrayList<>(2);
@@ -55,7 +48,6 @@ public class TradeXHomeView extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_trade_x_home_view, null);
         price.add("abc");
         price.add("def");
-        Log.e("tag","onCreate  "+price);
         context =v.getContext().getApplicationContext();
         Refresh = v.findViewById(R.id.Refresh);
         recyclerView = v.findViewById(R.id.HomeRecyclerView);
@@ -63,16 +55,11 @@ public class TradeXHomeView extends Fragment {
         Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                        madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
-//                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-////                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-////                        recyclerView.setHasFixedSize(true);
-//                        recyclerView.setAdapter(madaptor);
                         Refresh.setRefreshing(false);
 
             }
         });
-        retrofit2.Call<ExchangeInfo> call=Retroclient.getInstance().getApi().getData();
+        retrofit2.Call<ExchangeInfo> call= Retroclient.getInstance().getApi().getData();
         call.enqueue(new Callback<ExchangeInfo>() {
             @Override
             public void onResponse(Call<ExchangeInfo> call, Response<ExchangeInfo> response) {
@@ -97,7 +84,6 @@ public class TradeXHomeView extends Fragment {
                 Log.e("tag","msgs  "+t.fillInStackTrace());
             }
         });
-
         return v;
     }
 
@@ -115,38 +101,21 @@ public class TradeXHomeView extends Fragment {
         }
         @Override
         public void onMessage(WebSocket webSocket, final String text) {
-
-                                  try {
-                                     getActivity().runOnUiThread(new Runnable() {
-                                          Gson gson = new GsonBuilder().create();
-                                          com.example.tradex.Response p = gson.fromJson(text, com.example.tradex.Response.class);
-
-                                          @Override
-                                          public void run() {
-                                              price.set(0, p.getC());
-                                              price.set(1, p.getO());
-
-
-                                              madaptor.notify(price);
-                                              madaptor.notifyDataSetChanged();
-                                              Log.e("tag", "bbbbb   " + price);
-                                          }
-
-                                          });
-
-                                          //output(new JSONObject(text));
-                                              
-                                             
-
-
-                                  }catch (Throwable t) {
-                                      Log.e("My App", t.getMessage());
-                                  }
-
-
-
-            //Log.e("data",text);
-
+            try {
+                    getActivity().runOnUiThread(new Runnable() {
+                        Gson gson = new GsonBuilder().create();
+                        com.example.tradex.Models.Response p = gson.fromJson(text, com.example.tradex.Models.Response.class);
+                        @Override
+                        public void run() {
+                            price.set(0, p.getC());
+                            price.set(1, p.getO());
+                            madaptor.notify(price);
+                            madaptor.notifyDataSetChanged();
+                            Log.e("tag", "bbbbb   " + price);
+                        }});
+            }catch (Throwable t) {
+                Log.e("My App", t.getMessage());
+            }
         }
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {
