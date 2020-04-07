@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     EditText phone_number;
-    Button login;
+    private Button login;
     private CallbackManager callbackManager;
     private FirebaseAuth firebaseAuth;
 

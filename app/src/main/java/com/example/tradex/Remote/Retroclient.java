@@ -1,4 +1,4 @@
-package com.example.tradex;
+package com.example.tradex.Remote;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

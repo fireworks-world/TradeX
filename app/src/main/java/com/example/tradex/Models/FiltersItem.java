@@ -1,4 +1,4 @@
-package com.example.tradex;
+package com.example.tradex.Models;
 
 import com.google.gson.annotations.SerializedName;
 
