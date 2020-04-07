@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 public class AdapterCardView extends RecyclerView.Adapter<AdapterCardView.MyViewHolder> {
 
-    private ArrayList<String> baseAsset= new ArrayList<String>();
-    private ArrayList<String> quoteAsset= new ArrayList<String>();
+    private ArrayList<String> baseAsset= new ArrayList<>();
+    private ArrayList<String> quoteAsset= new ArrayList<>();
     private ArrayList<String> price=new ArrayList<>();
     private Context context;
 
@@ -56,10 +56,11 @@ public class AdapterCardView extends RecyclerView.Adapter<AdapterCardView.MyView
     }
 
     public void notify(ArrayList<String> price) {
-        this.price.set(0,price.get(0));
-        this.price.set(1,price.get(1));
+        for (int i = 0; i<2; i++) {
+            this.price.set(i, price.get(i));
+            //this.price.set(i+1, price.get(1));
+        }
     }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView Text1,Text2,Text3;

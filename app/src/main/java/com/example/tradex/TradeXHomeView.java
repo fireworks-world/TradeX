@@ -43,9 +43,10 @@ public class TradeXHomeView extends Fragment {
     private SwipeRefreshLayout Refresh;
     private OkHttpClient client;
     //private List<SymbolsItem> symbolsItemList;
-    private ArrayList<String> baseAsset= new ArrayList<String>();
-    private ArrayList<String> quoteAsset= new ArrayList<String>();
-    private ArrayList<String> price=new ArrayList<>(2);
+    private ArrayList<String> baseAsset= new ArrayList<>();
+    private ArrayList<String> quoteAsset= new ArrayList<>();
+    private ArrayList<String> price=new ArrayList<>();
+    public int s=1;
 
 
 
@@ -78,11 +79,16 @@ public class TradeXHomeView extends Fragment {
             public void onResponse(Call<ExchangeInfo> call, Response<ExchangeInfo> response) {
                 ExchangeInfo exchangeInfo=response.body();
                 List<SymbolsItem> symbolsItemList=exchangeInfo.getSymbols();
+                Log.e("tagg","data"+symbolsItemList.size());
                 for (int i=0;i<symbolsItemList.size();i++)
                 {
-                    if(symbolsItemList.get(i).getBaseAsset().equals("ETH") && symbolsItemList.get(i).getQuoteAsset().equals("USDT") ||symbolsItemList.get(i).getBaseAsset().equals("BTC") && symbolsItemList.get(i).getQuoteAsset().equals("USDT")) {
-                        baseAsset.add(symbolsItemList.get(i).getBaseAsset());
-                        quoteAsset.add(symbolsItemList.get(i).getQuoteAsset());
+                   if(symbolsItemList.get(i).getBaseAsset().equals("ETH") && symbolsItemList.get(i).getQuoteAsset().equals("USDT") ||symbolsItemList.get(i).getBaseAsset().equals("BTC") && symbolsItemList.get(i).getQuoteAsset().equals("USDT"))
+                   //if(symbolsItemList.get(i).getQuoteAsset().equals("USDT"))
+                    {
+                       // for(int j=0;j<quoteAsset.size();j++) {
+                            baseAsset.add(symbolsItemList.get(i).getBaseAsset());
+                            quoteAsset.add(symbolsItemList.get(i).getQuoteAsset());
+                       // }
                     }
                 }
                 madaptor = new AdapterCardView(baseAsset,quoteAsset,price,context);
@@ -103,7 +109,7 @@ public class TradeXHomeView extends Fragment {
 
     private void start() {
 
-        Request request = new Request.Builder().url("wss://stream.binance.com:9443/ws/btcusdt@miniTicker/ethusdt@miniTicker").build();
+        Request request = new Request.Builder().url("wss://stream.binance.com:9443/ws/btcusdt@miniTicker/ethusdt@miniTicker/bnbusdt@miniTicker").build();
         EchoWebSocketListener listener = new EchoWebSocketListener();
         WebSocket ws = client.newWebSocket(request, listener);
         client.dispatcher().executorService().shutdown();
@@ -120,16 +126,17 @@ public class TradeXHomeView extends Fragment {
                                      getActivity().runOnUiThread(new Runnable() {
                                           Gson gson = new GsonBuilder().create();
                                           com.example.tradex.Response p = gson.fromJson(text, com.example.tradex.Response.class);
-
+                                         int c= s++;
                                           @Override
                                           public void run() {
-                                              price.set(0, p.getC());
-                                              price.set(1, p.getO());
-
-
+                                              // price.set(1, p.getO());
+                                              //for(int i=0;i<2;i++) {
+                                                  price.set(0, p.getC());
+                                                  price.set(1,p.getC());
+                                             // }
                                               madaptor.notify(price);
                                               madaptor.notifyDataSetChanged();
-                                              Log.e("tag", "bbbbb   " + price);
+                                              Log.e("tag", "bbbbb   " + p+c);
                                           }
 
                                           });
