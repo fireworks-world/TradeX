@@ -110,7 +110,7 @@ public class TradeXHomeView extends Fragment {
         WebSocket ws = client.newWebSocket(request, listener);
         client.dispatcher().executorService().shutdown();
     }
-    private final class EchoWebSocketListener extends WebSocketListener {
+      private final class EchoWebSocketListener extends WebSocketListener {
         private static final int NORMAL_CLOSURE_STATUS = 1000;
         @Override
         public void onOpen(WebSocket webSocket, okhttp3.Response response) {
