@@ -1,31 +1,27 @@
 package com.example.tradex;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.core.app.Person;
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Context;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import com.example.tradex.Models.ExchangeInfo;
+import com.example.tradex.Models.SymbolsItem;
+import com.example.tradex.Remote.Retroclient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
@@ -76,7 +72,7 @@ public class TradeXHomeView extends Fragment {
         retrofit2.Call<ExchangeInfo> call=Retroclient.getInstance().getApi().getData();
         call.enqueue(new Callback<ExchangeInfo>() {
             @Override
-            public void onResponse(Call<ExchangeInfo> call, Response<ExchangeInfo> response) {
+            public void onResponse(Call<ExchangeInfo> call, Response <ExchangeInfo> response) {
                 ExchangeInfo exchangeInfo=response.body();
                 List<SymbolsItem> symbolsItemList=exchangeInfo.getSymbols();
                 Log.e("tagg","data"+symbolsItemList.size());
@@ -125,7 +121,7 @@ public class TradeXHomeView extends Fragment {
                                   try {
                                      getActivity().runOnUiThread(new Runnable() {
                                           Gson gson = new GsonBuilder().create();
-                                          com.example.tradex.Response p = gson.fromJson(text, com.example.tradex.Response.class);
+                                          com.example.tradex.Models.Response p = gson.fromJson(text, com.example.tradex.Models.Response.class);
                                          int c= s++;
                                           @Override
                                           public void run() {
